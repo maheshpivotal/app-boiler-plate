@@ -14,6 +14,9 @@ npx create-expo-app@latest . --template blank-typescript
 eas init
 ```
 
+Now let's create the eas.json configuration file with staging and production profiles:
+Now let's convert the static app.json to a dynamic app.config.js to support environment-specific configurations:
+
 ### 3. Install Core Dependencies
 ```bash
 # Navigation dependencies

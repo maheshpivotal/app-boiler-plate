@@ -56,7 +56,14 @@ export default ({ config }) => {
       },
       runtimeVersion: {
         policy: 'sdkVersion'
-      }
+      },
+      plugins: [
+        'expo-secure-store',
+        'expo-local-authentication',
+        'expo-camera',
+        'expo-image-picker',
+        'expo-notifications'
+      ]
     }
   };
 };
