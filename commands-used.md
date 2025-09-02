@@ -17,7 +17,14 @@ eas init
 Now let's create the eas.json configuration file with staging and production profiles:
 Now let's convert the static app.json to a dynamic app.config.js to support environment-specific configurations:
 
-### 3. Install Core Dependencies
+### 3. Create Project Structure
+```bash
+# Create organized folder structure
+mkdir -p src/{components,screens,navigation,services,store,utils,constants,types,hooks,config}
+mkdir -p src/screens/{auth,main} src/components/{common,forms} src/services/api
+```
+
+### 4. Install Core Dependencies
 ```bash
 # Navigation dependencies
 npm install @react-navigation/native @react-navigation/stack @react-navigation/bottom-tabs react-native-screens react-native-safe-area-context
@@ -35,10 +42,16 @@ npm install expo-constants expo-device expo-image expo-local-authentication expo
 npm install react-native-paper react-native-reanimated lottie-react-native
 
 # Form handling and validation
-npm install react-hook-form yup
+npm install react-hook-form yup @hookform/resolvers
+
+# State persistence and additional dependencies
+npm install redux-persist
+
+# React Navigation gesture handler
+npx expo install react-native-gesture-handler
 
 # Development dependencies
-npm install --save-dev @types/react @types/react-native eslint prettier
+npm install --save-dev @types/react @types/react-native eslint prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-prettier eslint-plugin-prettier eslint-plugin-react eslint-plugin-react-hooks
 ```
 
 ## EAS Build Commands
@@ -113,6 +126,24 @@ npm start
 npm run ios
 npm run android
 npm run web
+
+# Start with cleared cache
+npm run reset  # or npx expo r -c
+```
+
+### Test Navigation Architecture
+```bash
+# Start development server and test the app
+npm start
+
+# Navigation flow testing:
+# 1. App starts with LoadingScreen
+# 2. Shows LoginScreen (not authenticated)
+# 3. Login with any email/password (mock authentication)
+# 4. Redirects to MainNavigator with tabs
+# 5. Test all tabs: Home, Account, Subscriptions
+# 6. Logout from Account screen
+# 7. Returns to LoginScreen
 ```
 
 ### Code Quality Commands
@@ -206,6 +237,25 @@ rm -rf node_modules package-lock.json && npm install
 
 # Check Expo doctor for issues
 npx expo doctor
+
+# Fix package version compatibility issues
+npx expo install --fix
+```
+
+### Package Version Compatibility
+```bash
+# When you see version warnings like:
+# "The following packages should be updated for best compatibility..."
+
+# Fix all package versions to match Expo SDK
+npx expo install --fix
+
+# Install specific package versions compatible with your Expo SDK
+npx expo install @react-native-async-storage/async-storage
+npx expo install lottie-react-native
+npx expo install react-native-reanimated
+npx expo install react-native-safe-area-context
+npx expo install react-native-screens
 ```
 
 ### EAS Build Issues
@@ -289,6 +339,30 @@ npx expo export --dump-sourcemap --platform ios
 
 ---
 
+## Navigation Architecture Commands
+
+### Navigation & Redux Setup
+```bash
+# Navigation and state management (already installed above)
+# These commands set up the complete navigation architecture:
+
+# 1. Install navigation dependencies
+npm install @react-navigation/native @react-navigation/stack @react-navigation/bottom-tabs react-native-screens react-native-safe-area-context
+
+# 2. Install state management
+npm install @reduxjs/toolkit react-redux redux-persist
+
+# 3. Install form handling
+npm install react-hook-form yup @hookform/resolvers
+
+# 4. Install required gesture handler
+npx expo install react-native-gesture-handler
+
+# 5. Test the navigation flow
+npm start
+# Then follow the authentication flow in the app
+```
+
 ## Quick Reference
 
 | Command | Description |
@@ -300,8 +374,11 @@ npx expo export --dump-sourcemap --platform ios
 | `eas update` | Deploy OTA updates |
 | `npm start` | Start development server |
 | `npx expo doctor` | Check for common issues |
+| `npx expo install --fix` | Fix package version compatibility |
 | `eas build:list` | View build history |
+| `npm run lint` | Check code quality |
+| `npm run type-check` | Run TypeScript checks |
 
 ---
 
-*This file will be updated as we add more commands during development.*
+*This file has been updated with navigation architecture setup commands. Last updated: Navigation Architecture Phase Complete.*
