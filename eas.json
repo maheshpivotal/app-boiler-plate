@@ -1,0 +1,48 @@
+{
+  "cli": {
+    "version": ">= 3.0.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "API_BASE_URL": "http://localhost:8000/api",
+        "ENVIRONMENT": "development"
+      }
+    },
+    "staging": {
+      "distribution": "internal",
+      "env": {
+        "API_BASE_URL": "https://staging-api.yourdomain.com/api",
+        "ENVIRONMENT": "staging"
+      }
+    },
+    "production": {
+      "env": {
+        "API_BASE_URL": "https://api.yourdomain.com/api",
+        "ENVIRONMENT": "production"
+      }
+    }
+  },
+  "submit": {
+    "staging": {
+      "ios": {
+        "appleId": "your-staging-apple-id",
+        "ascAppId": "staging-app-store-connect-id"
+      },
+      "android": {
+        "track": "internal"
+      }
+    },
+    "production": {
+      "ios": {
+        "appleId": "your-production-apple-id",
+        "ascAppId": "production-app-store-connect-id"
+      },
+      "android": {
+        "track": "production"
+      }
+    }
+  }
+}
