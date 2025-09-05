@@ -453,4 +453,132 @@ file assets/icon.png && file assets/splash-icon.png
 
 ---
 
-*This file has been updated with splash screen configuration commands. Last updated: Splash Screen Configuration Complete.*
+## Error Tracking and Logging Commands
+
+### Setup Error Tracking
+```bash
+# Install error tracking dependencies
+npm install @sentry/react-native expo-error-recovery
+
+# Add Sentry plugin to app.config.js
+plugins: [
+  [
+    '@sentry/react-native/expo',
+    {
+      organization: process.env.SENTRY_ORG || 'your-org',
+      project: process.env.SENTRY_PROJECT || 'mob-app-boilerplate',
+      disabled: isDev, // Only enable in production
+    }
+  ]
+]
+```
+
+### Error Tracking Usage
+```typescript
+// Import the hook in any component
+import { useErrorTracking } from '../hooks/useErrorTracking';
+
+const MyComponent = () => {
+  const { logError, logWarning, logInfo, addBreadcrumb } = useErrorTracking();
+
+  // Log different types of errors
+  logInfo('User performed action', { action: 'button_click' });
+  logWarning('Deprecated API used', error, { api: 'old_endpoint' });
+  logError('Failed to save data', error, { userId: '123' });
+  
+  // Add breadcrumbs for user actions
+  addBreadcrumb('User navigated to screen', 'navigation', { screen: 'Home' });
+  
+  // Wrap async operations
+  const handleSave = wrapAsync(async () => {
+    await saveData();
+  }, 'Failed to save user data', { component: 'UserForm' });
+};
+```
+
+### API Error Tracking
+```typescript
+// In API service files
+import { handleApiError } from '../utils';
+
+try {
+  const response = await axios.get('/api/users');
+  return response.data;
+} catch (error) {
+  // This automatically logs the error with enhanced context
+  return handleApiError(error, '/api/users', 'GET');
+}
+```
+
+### User Context Tracking
+```typescript
+// Set user context for error tracking (in auth slice)
+import { errorTracker } from '../services/errorTracking';
+
+// On login
+errorTracker.setUserContext(user.id, user.email, {
+  subscription: user.subscription,
+  role: user.role
+});
+
+// On logout
+errorTracker.clearUserContext();
+```
+
+### View Error Logs
+```bash
+# Access error logs in development
+# Navigate to ErrorLogsScreen component to view:
+# - All logged errors with timestamps
+# - Filter by error level (info, warning, error, fatal)
+# - Search through error messages
+# - Export logs for debugging
+# - Clear local logs
+
+# Error logs are stored locally and sent to Sentry in production
+```
+
+### Sentry Configuration
+```bash
+# Set environment variables for Sentry
+export SENTRY_ORG="your-sentry-organization"
+export SENTRY_PROJECT="mob-app-boilerplate"
+export SENTRY_DSN="your-sentry-dsn-url"
+
+# In src/services/errorTracking.ts, update getSentryDSN method:
+private getSentryDSN(): string | undefined {
+  return process.env.SENTRY_DSN || 'your-sentry-dsn-here';
+}
+```
+
+### Error Boundary Usage
+```typescript
+// Wrap any component that might crash
+import ErrorBoundary from '../components/common/ErrorBoundary';
+
+<ErrorBoundary
+  fallback={<CustomErrorUI />}
+  onError={(error, errorInfo) => {
+    // Custom error handling
+    console.log('Component crashed:', error);
+  }}
+>
+  <YourComponent />
+</ErrorBoundary>
+```
+
+### Performance Monitoring
+```typescript
+// The error tracking service automatically includes:
+# - Session tracking (30-second intervals)
+# - Performance monitoring
+# - Breadcrumb trails
+# - User context
+# - Environment-specific filtering
+# - Local storage backup (development)
+# - Remote reporting (production/staging)
+```
+
+---
+
+*This file has been updated with comprehensive error tracking commands. Last updated: Error Tracking Implementation Complete.*

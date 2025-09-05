@@ -63,7 +63,16 @@ export default ({ config }) => {
         'expo-camera',
         'expo-image-picker',
         'expo-notifications',
-        'expo-splash-screen'
+        'expo-splash-screen',
+        [
+          '@sentry/react-native/expo',
+          {
+            organization: process.env.SENTRY_ORG || 'your-org',
+            project: process.env.SENTRY_PROJECT || 'mob-app-boilerplate',
+            // Only enable in production/staging
+            disabled: isDev,
+          }
+        ]
       ]
     }
   };

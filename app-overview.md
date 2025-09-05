@@ -10,8 +10,8 @@ Create a React Native mobile app boilerplate using Expo that integrates with Lar
 - [x] Install Expo CLI globally: `npm install -g @expo/cli`
 - [x] Install EAS CLI globally: `npm install -g eas-cli`
 - [ ] Setup Android Studio (for Android development)
-- [ ] Setup Xcode (for iOS development)
-- [ ] Install required simulators/emulators
+- [x] Setup Xcode (for iOS development)
+- [x] Install required simulators/emulators
 - [x] Create Expo account and configure EAS
 - [x] Configure environment variables template
 
@@ -172,7 +172,7 @@ src/
 - [ ] Setup axios interceptors for token management
 - [ ] Configure request/response transformation
 - [ ] Implement automatic token refresh logic
-- [ ] Setup error handling for API responses
+- [x] Setup error handling for API responses
 - [ ] Create environment detection utility using `Constants.expoConfig?.extra?.environment`
 
 ### 3.2 Authentication Screens Development ✅

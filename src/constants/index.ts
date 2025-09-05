@@ -14,6 +14,7 @@ export const STORAGE_KEYS = {
   ONBOARDING_COMPLETED: '@mobapp/onboarding_completed',
   THEME_PREFERENCE: '@mobapp/theme_preference',
   LANGUAGE_PREFERENCE: '@mobapp/language_preference',
+  ERROR_LOGS: '@mobapp/error_logs',
 } as const;
 
 // UI constants

@@ -89,32 +89,47 @@ export const getErrorMessage = (error: any): string => {
   return 'An unexpected error occurred';
 };
 
-export const handleApiError = (error: any) => {
-  console.error('API Error:', error);
+export const handleApiError = (error: any, endpoint?: string, method?: string) => {
+  // Import error tracker dynamically to avoid circular dependencies
+  const { errorTracker } = require('../services/errorTracking');
+  
+  let errorResponse;
   
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
-    return {
+    errorResponse = {
       message: error.response.data?.message || 'Server error occurred',
       statusCode: error.response.status,
       errors: error.response.data?.errors || {},
     };
   } else if (error.request) {
     // The request was made but no response was received
-    return {
+    errorResponse = {
       message: 'Network error. Please check your connection.',
       statusCode: 0,
       errors: {},
     };
   } else {
     // Something happened in setting up the request that triggered an Error
-    return {
+    errorResponse = {
       message: error.message || 'An unexpected error occurred',
       statusCode: -1,
       errors: {},
     };
   }
+
+  // Log the API error with enhanced context
+  if (endpoint) {
+    errorTracker.logApiError(error, endpoint, method);
+  } else {
+    errorTracker.logError('API Error', error, {
+      statusCode: errorResponse.statusCode,
+      errorMessage: errorResponse.message,
+    });
+  }
+
+  return errorResponse;
 };
 
 // Storage utilities

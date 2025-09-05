@@ -15,6 +15,10 @@ import { COLORS } from './src/constants';
 // Loading component for PersistGate
 import LoadingScreen from './src/screens/LoadingScreen';
 
+// Error tracking and boundary
+import { errorTracker } from './src/services/errorTracking';
+import ErrorBoundary from './src/components/common/ErrorBoundary';
+
 // Prevent the splash screen from auto-hiding before asset loading is complete
 SplashScreen.preventAutoHideAsync();
 
@@ -22,6 +26,9 @@ export default function App() {
   useEffect(() => {
     async function prepare() {
       try {
+        // Initialize error tracking service first
+        await errorTracker.initialize();
+        
         // Pre-load fonts, make any API calls you need to do here
         console.log('App: Preparing app resources');
         
@@ -29,6 +36,10 @@ export default function App() {
         await new Promise(resolve => setTimeout(resolve, 2000));
       } catch (e) {
         console.warn('Error loading app resources:', e);
+        // Log the error if error tracking is available
+        if (errorTracker) {
+          errorTracker.logError('App initialization failed', e as Error);
+        }
       } finally {
         // Tell the application to render
         await SplashScreen.hideAsync();
@@ -40,17 +51,19 @@ export default function App() {
   }, []);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#ffcb05' }}>
-      <Provider store={store}>
-        <PersistGate loading={<LoadingScreen />} persistor={persistor}>
-          <SafeAreaProvider style={{ backgroundColor: '#ffcb05' }}>
-            <PaperProvider>
-              <StatusBar style="light" backgroundColor="#ffcb05" />
-              <RootNavigator />
-            </PaperProvider>
-          </SafeAreaProvider>
-        </PersistGate>
-      </Provider>
-    </GestureHandlerRootView>
+    <ErrorBoundary>
+      <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#ffcb05' }}>
+        <Provider store={store}>
+          <PersistGate loading={<LoadingScreen />} persistor={persistor}>
+            <SafeAreaProvider style={{ backgroundColor: '#ffcb05' }}>
+              <PaperProvider>
+                <StatusBar style="light" backgroundColor="#ffcb05" />
+                <RootNavigator />
+              </PaperProvider>
+            </SafeAreaProvider>
+          </PersistGate>
+        </Provider>
+      </GestureHandlerRootView>
+    </ErrorBoundary>
   );
 }
