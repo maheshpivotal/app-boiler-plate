@@ -256,6 +256,10 @@ npx expo install lottie-react-native
 npx expo install react-native-reanimated
 npx expo install react-native-safe-area-context
 npx expo install react-native-screens
+
+# Fix specific version incompatibilities that cause Expo Go crashes
+# Use this when you see exact version mismatches in Metro bundler output
+npm install @react-native-async-storage/async-storage@2.1.2 lottie-react-native@7.2.2 react-native@0.79.5 react-native-reanimated@3.17.4 react-native-safe-area-context@5.4.0 react-native-screens@4.11.1
 ```
 
 ### EAS Build Issues
