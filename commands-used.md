@@ -385,4 +385,72 @@ npm start
 
 ---
 
-*This file has been updated with navigation architecture setup commands. Last updated: Navigation Architecture Phase Complete.*
+## Splash Screen Configuration Commands
+
+### Fix Splash Screen During Bundle Loading
+```bash
+# Install expo-splash-screen package
+npm install expo-splash-screen
+
+# Add to app.config.js plugins array
+plugins: [
+  'expo-splash-screen'
+]
+
+# Configure splash screen
+splash: {
+  image: './assets/splash-icon.png',
+  resizeMode: 'cover',        # Use 'cover' not 'contain'
+  backgroundColor: '#ffcb05'  # Your brand color
+}
+
+# Change package.json entry point (matches successful apps)
+"main": "node_modules/expo/AppEntry.js"
+
+# Clear all caches and restart
+rm -rf .expo && rm -rf node_modules/.cache && npx expo start --clear
+```
+
+### Expo Go Limitations
+```bash
+# Note: Expo Go may show white background during "building JavaScript bundle"
+# This is a development-only limitation of Expo Go app
+# Production builds and development builds will respect splash screen settings
+
+# To see proper splash screen in development:
+npx expo run:ios      # Creates custom development app
+npx expo run:android  # Creates custom development app
+
+# Check configuration is correct:
+npx expo config --type public
+# Should show your splash backgroundColor and image paths
+```
+
+### Asset Size Requirements
+```bash
+# Icon requirements:
+# - icon.png: 1024x1024 pixels minimum
+# - splash-icon.png: High resolution (e.g., 1284x2779)
+# - adaptive-icon.png: 1024x1024 pixels
+
+# Check current asset sizes:
+file assets/icon.png && file assets/splash-icon.png
+
+# Assets must be large enough for Expo to display properly
+# Small assets (e.g., 56x55) may be ignored or cached
+```
+
+### Extend Loading Screen for Styling
+```bash
+# To extend loading screen duration for styling work:
+# In src/navigation/RootNavigator.tsx, change:
+}, 1000); // 1 second - back to normal
+# To:
+}, 60000); // 60 seconds for styling
+
+# Remember to change back to 1000ms when done styling!
+```
+
+---
+
+*This file has been updated with splash screen configuration commands. Last updated: Splash Screen Configuration Complete.*

@@ -1,6 +1,6 @@
 // App constants
 export const APP_CONFIG = {
-  name: 'MobApp Boilerplate',
+  name: 'PVTL MobApp Boilerplate',
   version: '1.0.0',
   description: 'React Native mobile app boilerplate with Laravel integration',
 } as const;
@@ -18,7 +18,7 @@ export const STORAGE_KEYS = {
 
 // UI constants
 export const COLORS = {
-  primary: '#007AFF',
+  primary: '#ffcb05',
   primaryDark: '#0056CC',
   secondary: '#FF9500',
   secondaryDark: '#CC7700',

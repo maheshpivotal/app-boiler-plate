@@ -7,7 +7,7 @@ export default ({ config }) => {
   return {
     ...config,
     expo: {
-      name: isProduction ? 'MobApp' : `MobApp (${environment})`,
+      name: isProduction ? 'PVTL MobApp' : `PVTL MobApp (${environment})`,
       slug: 'mob-app-boilerplate',
       version: '1.0.0',
       orientation: 'portrait',
@@ -16,8 +16,8 @@ export default ({ config }) => {
       newArchEnabled: true,
       splash: {
         image: './assets/splash-icon.png',
-        resizeMode: 'contain',
-        backgroundColor: '#ffffff'
+        resizeMode: 'cover',
+        backgroundColor: '#ffcb05'
       },
       ios: {
         supportsTablet: true,
@@ -28,7 +28,7 @@ export default ({ config }) => {
       android: {
         adaptiveIcon: {
           foregroundImage: './assets/adaptive-icon.png',
-          backgroundColor: '#ffffff'
+          backgroundColor: '#ffcb05'
         },
         edgeToEdgeEnabled: true,
         package: isProduction 
@@ -62,7 +62,8 @@ export default ({ config }) => {
         'expo-local-authentication',
         'expo-camera',
         'expo-image-picker',
-        'expo-notifications'
+        'expo-notifications',
+        'expo-splash-screen'
       ]
     }
   };

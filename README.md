@@ -109,6 +109,8 @@ mob-app-boilerplate/
 
 ## 🎯 Available Scripts
 
+npx expo start --clear
+
 ### Development
 ```bash
 npm start              # Start Expo development server

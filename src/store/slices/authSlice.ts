@@ -124,6 +124,10 @@ const authSlice = createSlice({
         state.user = { ...state.user, ...action.payload };
       }
     },
+    setNotLoading: (state) => {
+      state.isLoading = false;
+      state.isAuthenticated = false; // Show login screen
+    },
   },
   extraReducers: (builder) => {
     // Check auth status
@@ -200,5 +204,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearError, updateUser } = authSlice.actions;
+export const { clearError, updateUser, setNotLoading } = authSlice.actions;
 export default authSlice.reducer;
