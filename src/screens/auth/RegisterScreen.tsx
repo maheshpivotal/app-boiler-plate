@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, TextInput, Checkbox } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { register } from '../../store/slices/authSlice';
 
 import { COLORS, SPACING, VALIDATION } from '../../constants';
 import { AuthScreenProps } from '../../navigation/navigationUtils';
@@ -33,6 +35,7 @@ const registerSchema = yup.object().shape({
     .oneOf([yup.ref('password')], 'Passwords must match'),
   acceptTerms: yup
     .boolean()
+    .required('You must accept the terms and conditions')
     .oneOf([true], 'You must accept the terms and conditions'),
 });
 
@@ -41,6 +44,8 @@ type RegisterScreenProps = AuthScreenProps<'Register'>;
 const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const dispatch = useAppDispatch();
+  const { isLoading, error } = useAppSelector((state) => state.auth);
 
   const {
     control,
@@ -59,9 +64,22 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
   });
 
   const onSubmit = async (data: RegisterCredentials) => {
-    // TODO: Implement registration logic
-    Alert.alert('Success', 'Registration functionality will be implemented');
-    console.log('Register data:', data);
+    try {
+      const result = await dispatch(register(data));
+      
+      if (register.fulfilled.match(result)) {
+        // Registration successful, user will be automatically logged in
+        Alert.alert('Success', 'Account created successfully!');
+      } else {
+        Alert.alert('Registration Failed', error || 'Please check your information');
+      }
+    } catch (err) {
+      Alert.alert('Error', 'An unexpected error occurred');
+    }
+  };
+
+  const onError = (errors: any) => {
+    Alert.alert('Validation Error', 'Please check all required fields');
   };
 
   const navigateToLogin = () => {
@@ -195,14 +213,42 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
           <Text style={styles.errorText}>{errors.passwordConfirmation.message}</Text>
         )}
 
+        {/* Accept Terms Checkbox */}
+        <Controller
+          control={control}
+          name="acceptTerms"
+          render={({ field: { onChange, value } }) => (
+            <View style={styles.checkboxContainer}>
+              <View style={styles.checkboxWrapper}>
+                <Checkbox
+                  status={value ? 'checked' : 'unchecked'}
+                  onPress={() => onChange(!value)}
+                  color={COLORS.primary}
+                />
+              </View>
+              <Text style={styles.checkboxText}>
+                I accept the{' '}
+                <Text style={styles.linkText}>Terms and Conditions</Text>
+                {' '}and{' '}
+                <Text style={styles.linkText}>Privacy Policy</Text>
+              </Text>
+            </View>
+          )}
+        />
+        {errors.acceptTerms && (
+          <Text style={[styles.errorText, { marginTop: SPACING.sm }]}>{errors.acceptTerms.message}</Text>
+        )}
+
         {/* Register Button */}
         <Button
           mode="contained"
-          onPress={handleSubmit(onSubmit)}
+          onPress={handleSubmit(onSubmit, onError)}
           style={styles.registerButton}
           labelStyle={styles.registerButtonText}
+          loading={isLoading}
+          disabled={isLoading}
         >
-          Create Account
+          {isLoading ? 'Creating Account...' : 'Create Account'}
         </Button>
       </View>
 
@@ -257,6 +303,30 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
     marginLeft: SPACING.sm,
   },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: SPACING.md,
+    paddingHorizontal: SPACING.xs,
+  },
+  checkboxWrapper: {
+    borderWidth: 1,
+    borderColor: COLORS.gray[300],
+    borderRadius: 4,
+    backgroundColor: COLORS.background,
+    marginRight: SPACING.sm,
+  },
+  checkboxText: {
+    flex: 1,
+    marginLeft: SPACING.xs,
+    fontSize: 14,
+    color: COLORS.textSecondary,
+    lineHeight: 20,
+  },
+  linkText: {
+    color: COLORS.primary,
+    fontWeight: '600',
+  },
   registerButton: {
     backgroundColor: COLORS.primary,
     marginTop: SPACING.lg,
@@ -272,10 +342,6 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 16,
     color: COLORS.textSecondary,
-  },
-  linkText: {
-    color: COLORS.primary,
-    fontWeight: '600',
   },
 });
 

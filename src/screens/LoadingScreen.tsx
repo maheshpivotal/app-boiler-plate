@@ -10,7 +10,6 @@ const LoadingScreen: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    console.log('LoadingScreen: Component mounted with yellow background');
     // Check auth status in background while loading screen is shown
     dispatch(checkAuthStatus());
   }, [dispatch]);

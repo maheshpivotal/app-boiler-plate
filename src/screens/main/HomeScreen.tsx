@@ -1,19 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Card, Button, Avatar } from 'react-native-paper';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
 import { COLORS, SPACING } from '../../constants';
 import { MainScreenProps } from '../../navigation/navigationUtils';
-import { RootState, AppDispatch } from '../../store';
+import { AppDispatch, useAppSelector } from '../../store';
 import { logout } from '../../store/slices/authSlice';
 
 type HomeScreenProps = MainScreenProps<'Home'>;
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const user = useAppSelector((state) => state.auth?.user);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -50,20 +50,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             style={styles.avatar}
           />
           <View style={styles.welcomeText}>
-            <Text style={styles.greeting}>Good morning</Text>
+            <Text style={styles.greeting}>Hello</Text>
             <Text style={styles.userName}>
               {user ? `${user.firstName} ${user.lastName}` : 'User'}
             </Text>
           </View>
         </View>
-        <Button 
-          mode="text" 
-          onPress={handleLogout}
-          icon="logout"
-          labelStyle={styles.logoutButton}
-        >
-          Logout
-        </Button>
       </View>
 
       {/* Stats Cards */}

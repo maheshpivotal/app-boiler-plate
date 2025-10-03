@@ -14,7 +14,7 @@ const getEnvironmentConfig = (): Environment => {
   const extra = Constants.expoConfig?.extra;
   
   return {
-    apiBaseUrl: extra?.apiBaseUrl || 'http://localhost:8000/api',
+    apiBaseUrl: extra?.apiBaseUrl || 'http://laravel-template.pub.localhost/api',
     environment: extra?.environment || 'development',
     features: extra?.features || {
       enableAnalytics: false,
@@ -34,9 +34,10 @@ export const isProduction = () => ENV.environment === 'production';
 // API endpoints
 export const API_ENDPOINTS = {
   auth: {
-    login: `${ENV.apiBaseUrl}/auth/login`,
-    register: `${ENV.apiBaseUrl}/auth/register`,
-    resetPassword: `${ENV.apiBaseUrl}/auth/reset-password`,
+    login: `${ENV.apiBaseUrl}/login`,
+    register: `${ENV.apiBaseUrl}/register`,
+    forgotPassword: `${ENV.apiBaseUrl}/forgot-password`,
+    resetPassword: `${ENV.apiBaseUrl}/reset-password`,
     refreshToken: `${ENV.apiBaseUrl}/auth/refresh`,
     logout: `${ENV.apiBaseUrl}/auth/logout`,
   },

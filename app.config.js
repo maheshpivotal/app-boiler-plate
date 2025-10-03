@@ -42,7 +42,7 @@ export default ({ config }) => {
         eas: {
           projectId: '0479c413-b994-4ab1-87b5-e4fd3994e6ae'
         },
-        apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:8000/api',
+        apiBaseUrl: process.env.API_BASE_URL || 'http://laravel-template.pub.localhost/api',
         environment: environment,
         features: {
           enableAnalytics: isProduction,

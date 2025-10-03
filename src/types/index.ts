@@ -1,13 +1,17 @@
 // Authentication types
 export interface User {
   id: string;
+  name?: string; // Laravel returns name field
   email: string;
   firstName: string;
   lastName: string;
   avatar?: string;
   emailVerifiedAt?: string;
+  email_verified_at?: string; // Laravel snake_case
   createdAt: string;
   updatedAt: string;
+  created_at?: string; // Laravel snake_case
+  updated_at?: string; // Laravel snake_case
 }
 
 export interface AuthState {

@@ -4,6 +4,8 @@ import { Button, TextInput } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { forgotPassword } from '../../store/slices/authSlice';
 
 import { COLORS, SPACING, VALIDATION } from '../../constants';
 import { AuthScreenProps } from '../../navigation/navigationUtils';
@@ -20,6 +22,9 @@ const resetPasswordSchema = yup.object().shape({
 type ResetPasswordScreenProps = AuthScreenProps<'ResetPassword'>;
 
 const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ navigation }) => {
+  const dispatch = useAppDispatch();
+  const { isLoading, error } = useAppSelector((state) => state.auth);
+  
   const {
     control,
     handleSubmit,
@@ -32,18 +37,25 @@ const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ navigation })
   });
 
   const onSubmit = async (data: ResetPasswordRequest) => {
-    // TODO: Implement reset password logic
-    Alert.alert(
-      'Reset Link Sent',
-      'If an account with this email exists, you will receive a password reset link.',
-      [
-        {
-          text: 'OK',
-          onPress: () => navigation.navigate('Login'),
-        },
-      ]
-    );
-    console.log('Reset password data:', data);
+    try {
+      const result = await dispatch(forgotPassword(data));
+      if (forgotPassword.fulfilled.match(result)) {
+        Alert.alert(
+          'Reset Link Sent',
+          'If an account with this email exists, you will receive a password reset link.',
+          [
+            {
+              text: 'OK',
+              onPress: () => navigation.navigate('Login'),
+            },
+          ]
+        );
+      } else {
+        Alert.alert('Error', error || 'Failed to send reset email');
+      }
+    } catch (err) {
+      Alert.alert('Error', 'An unexpected error occurred');
+    }
   };
 
   const navigateToLogin = () => {
@@ -90,8 +102,10 @@ const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ navigation })
           onPress={handleSubmit(onSubmit)}
           style={styles.resetButton}
           labelStyle={styles.resetButtonText}
+          loading={isLoading}
+          disabled={isLoading}
         >
-          Send Reset Link
+          {isLoading ? 'Sending...' : 'Send Reset Link'}
         </Button>
       </View>
 

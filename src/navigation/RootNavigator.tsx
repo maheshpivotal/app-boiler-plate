@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
 import { RootStackParamList } from '../types';
-import { RootState } from '../store';
+import { RootState, useAppSelector, store } from '../store';
 
 // Import navigators
 import AuthNavigator from './AuthNavigator';
@@ -15,16 +15,28 @@ import LoadingScreen from '../screens/LoadingScreen';
 const Stack = createStackNavigator<RootStackParamList>();
 
 const RootNavigator: React.FC = () => {
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  // Use separate selectors to avoid unnecessary re-renders
+  // Add more defensive checks for state access
+  const isAuthenticated = useAppSelector((state) => {
+    // Ensure state exists and auth slice exists before accessing properties
+    if (!state || typeof state !== 'object' || !state.auth) {
+      return false;
+    }
+    return state.auth.isAuthenticated || false;
+  });
+  
+  const isLoading = useAppSelector((state) => {
+    if (!state || typeof state !== 'object' || !state.auth) {
+      return true; // Show loading if state is not ready
+    }
+    return state.auth.isLoading || false;
+  });
+  
   const [isAppLoading, setIsAppLoading] = useState(true); // Separate loading state for styling
-
-  console.log('App State:', { isAuthenticated, isAppLoading }); // Debug log
 
   // Force show loading screen for 1 second regardless of auth state
   useEffect(() => {
-    console.log('RootNavigator: Starting independent 1-second loading timer');
     const timer = setTimeout(() => {
-      console.log('RootNavigator: 1 second completed, hiding loading screen');
       setIsAppLoading(false);
     }, 1000); // 1 second - back to normal
 
@@ -43,7 +55,25 @@ const RootNavigator: React.FC = () => {
           text: '#ffffff', 
           border: '#ffcb05', 
           notification: '#ffcb05' 
-        } 
+        },
+        fonts: {
+          regular: {
+            fontFamily: 'System',
+            fontWeight: '400',
+          },
+          medium: {
+            fontFamily: 'System',
+            fontWeight: '500',
+          },
+          bold: {
+            fontFamily: 'System',
+            fontWeight: 'bold',
+          },
+          heavy: {
+            fontFamily: 'System',
+            fontWeight: '700',
+          },
+        }
       }}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Loading" component={LoadingScreen} />
@@ -63,6 +93,24 @@ const RootNavigator: React.FC = () => {
         text: '#000000',
         border: '#e0e0e0',
         notification: '#007AFF'
+      },
+      fonts: {
+        regular: {
+          fontFamily: 'System',
+          fontWeight: '400',
+        },
+        medium: {
+          fontFamily: 'System',
+          fontWeight: '500',
+        },
+        bold: {
+          fontFamily: 'System',
+          fontWeight: 'bold',
+        },
+        heavy: {
+          fontFamily: 'System',
+          fontWeight: '700',
+        },
       }
     }}>
       <Stack.Navigator

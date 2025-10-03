@@ -49,7 +49,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       const result = await dispatch(login(data));
       if (login.fulfilled.match(result)) {
         // Navigation is handled by RootNavigator based on auth state
-        console.log('Login successful');
       } else {
         Alert.alert('Login Failed', error || 'Please check your credentials');
       }

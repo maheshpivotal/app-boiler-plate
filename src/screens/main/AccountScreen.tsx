@@ -1,18 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { List, Avatar, Button, Divider } from 'react-native-paper';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { COLORS, SPACING } from '../../constants';
 import { MainScreenProps } from '../../navigation/navigationUtils';
-import { RootState, AppDispatch } from '../../store';
+import { AppDispatch, useAppSelector } from '../../store';
 import { logout } from '../../store/slices/authSlice';
 
 type AccountScreenProps = MainScreenProps<'Account'>;
 
 const AccountScreen: React.FC<AccountScreenProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const user = useAppSelector((state) => state.auth?.user);
 
   const handleLogout = () => {
     Alert.alert(
@@ -170,9 +170,9 @@ const AccountScreen: React.FC<AccountScreenProps> = () => {
           titleStyle={styles.dangerText}
         />
         
-        <Divider />
+        {/* <Divider /> */}
         
-        <List.Item
+        {/* <List.Item
           title="Delete Account"
           description="Permanently delete your account"
           left={(props) => <List.Icon {...props} icon="delete" color={COLORS.error} />}
@@ -180,7 +180,7 @@ const AccountScreen: React.FC<AccountScreenProps> = () => {
           onPress={handleDeleteAccount}
           style={styles.listItem}
           titleStyle={styles.dangerText}
-        />
+        /> */}
       </View>
     </ScrollView>
   );
