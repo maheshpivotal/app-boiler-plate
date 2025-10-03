@@ -258,19 +258,19 @@ const styles = StyleSheet.create({
     marginLeft: SPACING.sm,
   },
   registerButton: {
+    backgroundColor: COLORS.primary,
     marginTop: SPACING.lg,
     paddingVertical: SPACING.sm,
   },
   registerButtonText: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '600',
   },
   footer: {
-    alignItems: 'center',
-    marginTop: SPACING.lg,
+    alignItems: 'center'
   },
   footerText: {
-    fontSize: 14,
+    fontSize: 16,
     color: COLORS.textSecondary,
   },
   linkText: {

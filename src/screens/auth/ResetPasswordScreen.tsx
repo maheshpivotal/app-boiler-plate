@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
     marginLeft: SPACING.sm,
   },
   resetButton: {
+    backgroundColor: COLORS.primary,
     marginTop: SPACING.lg,
     paddingVertical: SPACING.sm,
   },
@@ -154,10 +155,9 @@ const styles = StyleSheet.create({
   },
   footer: {
     alignItems: 'center',
-    marginTop: SPACING.lg,
   },
   footerText: {
-    fontSize: 14,
+    fontSize: 16,
     color: COLORS.textSecondary,
   },
   linkText: {

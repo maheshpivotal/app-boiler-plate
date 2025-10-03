@@ -8,7 +8,7 @@ export default ({ config }) => {
     ...config,
     expo: {
       name: isProduction ? 'PVTL MobApp' : `PVTL MobApp (${environment})`,
-      slug: 'mob-app-boilerplate',
+      slug: 'pvtl-app-boilerplate',
       version: '1.0.0',
       orientation: 'portrait',
       icon: './assets/icon.png',
@@ -40,7 +40,7 @@ export default ({ config }) => {
       },
       extra: {
         eas: {
-          projectId: '693d5aca-1e24-4bc1-af50-32e15e08a121'
+          projectId: '0479c413-b994-4ab1-87b5-e4fd3994e6ae'
         },
         apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:8000/api',
         environment: environment,
@@ -50,19 +50,19 @@ export default ({ config }) => {
           enableCrashReporting: isProduction || isStaging
         }
       },
-      owner: 'code.colors',
+      owner: 'code-colors',
       updates: {
-        url: 'https://u.expo.dev/693d5aca-1e24-4bc1-af50-32e15e08a121'
+        url: 'https://u.expo.dev/0479c413-b994-4ab1-87b5-e4fd3994e6ae'
       },
-      runtimeVersion: {
-        policy: 'sdkVersion'
-      },
+      runtimeVersion: '1.0.0',
       plugins: [
-        'expo-secure-store',
-        'expo-local-authentication',
-        'expo-camera',
-        'expo-image-picker',
-        'expo-notifications',
+        // Comment out these plugins temporarily to use with Expo Go
+        // Uncomment when using development builds
+        // 'expo-secure-store',
+        // 'expo-local-authentication',
+        // 'expo-camera',
+        // 'expo-image-picker',
+        // 'expo-notifications',
         'expo-splash-screen',
         [
           '@sentry/react-native/expo',

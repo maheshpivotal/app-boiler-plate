@@ -295,3 +295,5 @@ export const logApiError = (error: any, endpoint: string, method?: string) =>
 
 export const addBreadcrumb = (message: string, category: string, data?: Record<string, any>) => 
   errorTracker.addBreadcrumb(message, category, data);
+
+

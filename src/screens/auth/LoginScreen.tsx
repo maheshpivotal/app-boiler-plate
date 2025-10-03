@@ -127,16 +127,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           <Text style={styles.errorText}>{errors.password.message}</Text>
         )}
 
-        {/* Forgot Password Link */}
-        <Button
-          mode="text"
-          onPress={navigateToResetPassword}
-          style={styles.forgotPassword}
-          labelStyle={styles.forgotPasswordText}
-        >
-          Forgot Password?
-        </Button>
-
         {/* Login Button */}
         <Button
           mode="contained"
@@ -149,31 +139,21 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           {isLoading ? 'Signing In...' : 'Sign In'}
         </Button>
 
+        {/* Forgot Password Link */}
+        <Button
+          mode="text"
+          onPress={navigateToResetPassword}
+          style={styles.forgotPassword}
+          labelStyle={styles.forgotPasswordText}
+        >
+          Forgot Password?
+        </Button>
+
         {/* Divider */}
         <View style={styles.dividerContainer}>
           <Divider style={styles.divider} />
-          <Text style={styles.dividerText}>or</Text>
-          <Divider style={styles.divider} />
         </View>
 
-        {/* Social Login Buttons */}
-        <Button
-          mode="outlined"
-          onPress={() => Alert.alert('Coming Soon', 'Social login will be implemented')}
-          style={styles.socialButton}
-          icon="google"
-        >
-          Continue with Google
-        </Button>
-
-        <Button
-          mode="outlined"
-          onPress={() => Alert.alert('Coming Soon', 'Social login will be implemented')}
-          style={styles.socialButton}
-          icon="apple"
-        >
-          Continue with Apple
-        </Button>
       </View>
 
       {/* Register Link */}
@@ -228,25 +208,26 @@ const styles = StyleSheet.create({
     marginLeft: SPACING.sm,
   },
   forgotPassword: {
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
     marginBottom: SPACING.lg,
   },
   forgotPasswordText: {
     color: COLORS.primary,
-    fontSize: 14,
+    fontSize: 16,
   },
   loginButton: {
-    marginBottom: SPACING.lg,
+    backgroundColor: COLORS.primary,
+    marginTop: SPACING.sm,
+    marginBottom: SPACING.sm,
     paddingVertical: SPACING.sm,
   },
   loginButtonText: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '600',
   },
   dividerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: SPACING.lg,
   },
   divider: {
     flex: 1,
@@ -262,10 +243,9 @@ const styles = StyleSheet.create({
   },
   footer: {
     alignItems: 'center',
-    marginTop: SPACING.lg,
   },
   footerText: {
-    fontSize: 14,
+    fontSize: 16,
     color: COLORS.textSecondary,
   },
   linkText: {

@@ -6,6 +6,7 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "channel": "development",
       "env": {
         "API_BASE_URL": "http://localhost:8000/api",
         "ENVIRONMENT": "development"
@@ -13,12 +14,14 @@
     },
     "staging": {
       "distribution": "internal",
+      "channel": "staging",
       "env": {
         "API_BASE_URL": "https://staging-api.yourdomain.com/api",
         "ENVIRONMENT": "staging"
       }
     },
     "production": {
+      "channel": "production",
       "env": {
         "API_BASE_URL": "https://api.yourdomain.com/api",
         "ENVIRONMENT": "production"

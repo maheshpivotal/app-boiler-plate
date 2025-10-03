@@ -581,4 +581,118 @@ import ErrorBoundary from '../components/common/ErrorBoundary';
 
 ---
 
-*This file has been updated with comprehensive error tracking commands. Last updated: Error Tracking Implementation Complete.*
+## EAS Build & Update Workflow
+
+### EAS Build Commands (Creates New Binaries)
+```bash
+# For testing splash screen - REQUIRES BUILD, not update
+eas build --platform ios --profile development
+eas build --platform android --profile development
+
+# Staging builds for testing
+eas build --platform ios --profile staging
+eas build --platform android --profile staging
+
+# Production builds for release
+eas build --platform ios --profile production
+eas build --platform android --profile production
+```
+
+### EAS Update Commands (OTA Updates to Existing Builds)
+```bash
+# Send OTA update to specific channels (uses channels from build profiles)
+eas update --channel development
+eas update --channel staging
+eas update --channel production
+
+# Auto-detect channel from current branch (if branch names match channels)
+eas update --auto
+
+# Update with custom message
+eas update --channel development --message "Fixed login bug"
+```
+
+### EAS Submit Commands (Submit to App Stores)
+```bash
+# Submit staging build to TestFlight/Play Console internal track
+eas submit --platform ios --profile staging
+eas submit --platform android --profile staging
+
+# Submit production build to App Store/Play Store
+eas submit --platform ios --profile production
+eas submit --platform android --profile production
+```
+
+### Testing Splash Screen Workflow
+```bash
+# STEP 1: Create development build (required for splash screen testing)
+eas build --platform ios --profile development
+
+# STEP 2: Install the .ipa/.apk on device/simulator
+# Download from EAS build page and install
+
+# STEP 3: Future JavaScript updates can use OTA
+eas update --channel development
+
+# NOTE: Splash screen changes require new BUILD, not OTA update
+# Native code changes (splash, icons, permissions) need eas build
+# JavaScript changes (components, logic) can use eas update
+```
+
+### Development Workflow
+```bash
+# Daily development with Expo Go (white splash limitation)
+npx expo start
+
+# Development with custom development client (requires build first)
+npx expo start --dev-client
+
+# Weekly/milestone testing with proper splash screen
+eas build --platform ios --profile development
+# Install build on device, then use OTA updates for JS changes
+eas update --channel development
+
+# Pre-release testing
+eas build --platform ios --profile staging
+eas submit --platform ios --profile staging  # TestFlight
+
+# Production release
+eas build --platform ios --profile production
+eas submit --platform ios --profile production  # App Store
+```
+
+### Bare Workflow Commands (Your Project Type)
+```bash
+# Your project is BARE WORKFLOW (has ios/ and android/ directories)
+# Required fixes for bare workflow:
+
+# 1. Runtime version must be string, not policy object
+"runtimeVersion": "1.0.0"  # ✅ Fixed
+# NOT: "runtimeVersion": {"policy": "sdkVersion"}  # ❌ Doesn't work in bare
+
+# 2. expo-dev-client required for development builds
+npx expo install expo-dev-client  # ✅ Installed
+
+# 3. Correct development commands:
+npx expo start                    # Regular Expo Go development
+npx expo start --dev-client       # Custom development client
+# NOT: npx expo dev  ❌ Invalid command
+
+# 4. Build commands work same as managed workflow:
+eas build --platform ios --profile development
+eas build --platform android --profile development
+```
+
+### What Each Command Does
+```bash
+# eas build    - Creates new binary (.ipa/.apk) with native changes
+# eas update   - Sends JavaScript/React Native code updates to existing builds
+# eas submit   - Uploads builds to App Store Connect/Google Play Console
+
+# For splash screen testing: USE eas build (not eas update)
+# For code changes after build: USE eas update
+```
+
+---
+
+*This file has been updated with EAS build and update workflow. Last updated: EAS Workflow Configuration Complete.*
